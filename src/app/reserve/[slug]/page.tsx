@@ -1,19 +1,22 @@
-import Navbar from "@/components/Navbar";
+import type { Metadata } from "next";
+
 import ReservationForm from "./components/RervationForm";
 import ReservationHeader from "./components/ReservationHeader";
+
+export const metadata: Metadata = {
+  title: "Reserve | BookTable",
+  description: "Reserve your table",
+};
 
 interface pageProps {}
 
 export default function ({}) {
   return (
-    <main className="max-w-screen-2xl m-auto bg-white">
-      <Navbar />
-      <div className="border-t h-screen">
-        <div className="py-9 w-3/5 m-auto">
-          <ReservationHeader />
-          <ReservationForm />
-        </div>
+    <div className="border-t h-screen">
+      <div className="py-9 w-3/5 m-auto">
+        <ReservationHeader />
+        <ReservationForm />
       </div>
-    </main>
+    </div>
   );
 }

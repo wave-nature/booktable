@@ -1,43 +1,47 @@
-import Link from "next/link";
+import prisma from "@/utils/db";
 
-import MainNavbar from "@/components/Navbar";
-import Navbar from "../components/Navbar";
-import Header from "../components/Header";
+interface pageProps {
+  params: {
+    slug: string;
+  };
+}
 
-interface pageProps {}
+async function fetchItems(slug: string) {
+  return prisma.restaurant.findUnique({
+    where: {
+      slug,
+    },
+    select: {
+      items: true,
+    },
+  });
+}
 
-export default function <pageProps>({}) {
+export default async function ({ params }: pageProps) {
+  const restaurant = await fetchItems(params.slug);
+
   return (
-    <main className="max-w-screen-2xl m-auto bg-white">
-      {/* NAVBAR */}
-      <MainNavbar />
-      <Header />
-      <div className="flex m-auto w-2/3 justify-between items-start 0 -mt-11">
-        <div className="bg-white w-[100%] rounded p-3 shadow">
-          <Navbar />
-          {/* MENU */}
-          <main className="bg-white mt-5">
-            <div>
-              <div className="mt-4 pb-1 mb-1">
-                <h1 className="font-bold text-4xl">Menu</h1>
+    <>
+      {/* MENU */}
+      <main className="bg-white mt-5">
+        <div>
+          <div className="mt-4 pb-1 mb-1">
+            <h1 className="font-bold text-4xl">Menu</h1>
+          </div>
+          <div className="flex flex-wrap justify-between">
+            {/* MENU CARD */}
+            {restaurant?.items.map((item) => (
+              <div key={item.id} className=" border rounded p-3 w-[49%] mb-3">
+                <h3 className="font-bold text-lg">{item.name}</h3>
+                <p className="font-light mt-1 text-sm">{item.description}</p>
+                <p className="mt-7">{item.price}</p>
               </div>
-              <div className="flex flex-wrap justify-between">
-                {/* MENU CARD */}
-                <div className=" border rounded p-3 w-[49%] mb-3">
-                  <h3 className="font-bold text-lg">Surf and Turf</h3>
-                  <p className="font-light mt-1 text-sm">
-                    A well done steak with lobster and rice
-                  </p>
-                  <p className="mt-7">$80.00</p>
-                </div>
-                {/* MENU CARD */}
-              </div>
-            </div>
-          </main>
-          {/* MENU */}
+            ))}
+            {/* MENU CARD */}
+          </div>
         </div>
-      </div>
-      {/* DESCRIPTION PORTION */}
-    </main>
+      </main>
+      {/* MENU */}
+    </>
   );
 }
