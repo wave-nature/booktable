@@ -8,9 +8,8 @@ export default function () {
   const router = useRouter();
 
   const searchHandler = useCallback(() => {
-    console.log(location);
     if (location === "banana") return;
-    router.push(`/search/${location}`);
+    router.push(`/search?city=${location}`);
   }, [location]);
 
   return (
@@ -19,7 +18,7 @@ export default function () {
         className="rounded  mr-3 p-2 w-[450px]"
         type="text"
         placeholder="State, city or town"
-        onChange={(e) => setLocation(e.target.value)}
+        onChange={(e) => setLocation(e.target.value.toLowerCase())}
         value={location}
       />
       <button

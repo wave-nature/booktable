@@ -1,7 +1,11 @@
 import Navbar from "@/components/Navbar";
 import "./globals.css";
+import "react-datepicker/dist/react-datepicker.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
+import Loading from "./loading";
+import AuthContextProvider from "@/context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +25,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-gray-100 min-h-screen`}>
-        <main className="max-w-screen-2xl m-auto bg-white">
-          <Navbar />
-          {children}
-        </main>
+        <AuthContextProvider>
+          <main className="max-w-screen-2xl m-auto bg-white">
+            <Navbar />
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </main>
+        </AuthContextProvider>
       </body>
     </html>
   );

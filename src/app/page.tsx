@@ -2,7 +2,7 @@ import prisma from "@/utils/db";
 import RestauarantCard from "@/components/RestauarantCard";
 import Serachbar from "@/components/Serachbar";
 
-import { PRICE, Cuisine, Location } from "@prisma/client";
+import { PRICE, Cuisine, Location, Review } from "@prisma/client";
 
 export interface RestauarantCardType {
   id: number;
@@ -12,6 +12,9 @@ export interface RestauarantCardType {
   cuisine: Cuisine;
   location: Location;
   slug: string;
+  reviews: Review[];
+  open_time: string;
+  close_time: string;
 }
 
 async function fetchRestaurants(): Promise<RestauarantCardType[]> {
@@ -24,6 +27,9 @@ async function fetchRestaurants(): Promise<RestauarantCardType[]> {
       cuisine: true,
       location: true,
       slug: true,
+      reviews: true,
+      open_time: true,
+      close_time: true,
     },
   });
 }
@@ -41,9 +47,9 @@ export default async function Home() {
           <Serachbar />
         </div>
       </div>
-      <div className="py-3 px-36 mt-10 flex flex-wrap justify-start">
+      <div className="py-3 px-36 mt-10 flex flex-wrap justify-center">
         {restaurants.map((restaurant) => (
-          <RestauarantCard restaurant={restaurant} />
+          <RestauarantCard key={restaurant.id} restaurant={restaurant} />
         ))}
       </div>
     </main>
